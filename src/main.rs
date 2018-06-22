@@ -14,6 +14,7 @@ fn create_image() -> Box<Control> {
 	let img = image::load(BufReader::new(File::open("res/lulz.png").unwrap()), image::PNG).unwrap();
 	
 	let mut i = plygui_image::imp::Image::with_content(img);
+	i.set_scale(plygui_image::ScalePolicy::FitCenter);
 	i.set_layout_width(layout::Size::MatchParent);
     i.set_layout_height(layout::Size::MatchParent);
     
@@ -23,7 +24,9 @@ fn create_frame() -> Box<Control> {
 	let mut frame = plygui::imp::Frame::with_label("Horizontal Frame");    
     
     frame.set_child(Some(create_image()));
-	
+	frame.set_layout_width(layout::Size::MatchParent);
+    frame.set_layout_height(layout::Size::WrapContent);
+    
 	frame.into_control()
 }
 
@@ -107,6 +110,7 @@ fn create_vertical_layout() -> Box<Control> {
          }).into(),
     ));
     vb.push_child(button.into_control());
+    vb.push_child(create_image());
     vb.into_control()
 }
 
@@ -121,7 +125,7 @@ fn main() {
          }).into(),
     ));
 
-    window.set_child(Some(create_frame()));
+    window.set_child(Some(create_vertical_layout()));
 	
 	application.start();
     
