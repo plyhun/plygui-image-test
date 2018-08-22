@@ -34,7 +34,6 @@ fn create_button(name: &str) -> Box<Control> {
 	let mut button = plygui::imp::Button::with_label(name);
     button.set_layout_width(layout::Size::WrapContent);
     button.set_layout_height(layout::Size::WrapContent);
-    button.set_layout_padding(layout::BoundarySize::AllTheSame(5).into());
     button.into_control()
 }
 
