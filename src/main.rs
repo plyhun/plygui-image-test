@@ -14,7 +14,7 @@ fn create_image() -> Box<Control> {
 	let img = image::load(BufReader::new(File::open("res/lulz.png").unwrap()), image::PNG).unwrap();
 	
 	let mut i = plygui_image::imp::Image::with_content(img);
-	i.set_scale(plygui_image::ScalePolicy::FitCenter);
+	i.set_scale(plygui_image::ScalePolicy::CropCenter);
 	i.set_layout_width(layout::Size::MatchParent);
     i.set_layout_height(layout::Size::MatchParent);
     
@@ -49,8 +49,10 @@ fn create_vertical_layout() -> Box<Control> {
     let butt1_id = button.id();
     //button.set_layout_params(layout::Params::WrapContent, layout::Params::MatchParent);
     button.on_click(Some(
-        (|b: &mut Button| {
-             println!("button clicked: {}", b.label());
+        (|b: &mut Clickable| {
+             let b = b.as_any_mut().downcast_mut::<plygui::imp::Button>().unwrap();
+    	
+        	 println!("button clicked: {}", b.label());
              b.set_visibility(Visibility::Gone);
              //b.set_visibility(Visibility::Invisible);
              
@@ -75,8 +77,10 @@ fn create_vertical_layout() -> Box<Control> {
     let mut button = plygui::imp::Button::with_label("Butt2");
     //button.set_layout_params(layout::Params::WrapContent, layout::Params::MatchParent);
     button.on_click(Some(
-        (move |b: &mut Button| {
-            println!("button clicked: {} / {:?}", b.label(), b.as_control().id());
+        (move |b: &mut Clickable| {
+            let b = b.as_any_mut().downcast_mut::<plygui::imp::Button>().unwrap();
+    	
+        	println!("button clicked: {} / {:?}", b.label(), b.as_control().id());
             {
             	let parent = b.parent().unwrap();
                 let parent_member_id = parent.as_any().get_type_id();
